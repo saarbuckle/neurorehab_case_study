@@ -1,13 +1,16 @@
+##########################################################
+# Project: MindMaze NeuroRehab Case Study 
+# This file: analysis cases to for report
+# 05/2023
+# Spencer Arbuckle
+# R version 4.2.2
+##########################################################
 
-# install packages if needed:
-#install.packages(c("here","dplyr","plotly","ggplotly","ggplot2","gridExtra"))
+#### Preamble ####
+# add necessary packages:
+source("code/packages.R")
 
-library(here) # file path tools
-library(dplyr) # data frame filtering
-library(plotly) # interactive visualizations
-library(ggplot2) # plotting
-library(gridExtra) # subplots
-
+# define some functions:
 # helper function to set analysis parameters
 set_analysis_params <- function(){
   return(data.frame(num_sim = 100, # how many simulated groups of patients per therapy?
@@ -85,6 +88,7 @@ check_simulation_accuracy <- function(df_therapies, df_params, plot_it){
 }
 
 
+#### PART 1: perform % successful therapy analysis ####
 df_params <- set_analysis_params()
 set.seed(df_params$rand_seed)
 # define the potential therapies:
@@ -137,6 +141,7 @@ if (plot_one){
   ggplotly(p1)
 }
 
+#### PART 2: perform % treated analysis ####
 # define the cost per patient for each therapy (assuming therapy delivered exactly as explained in paper)
 df_costs <- read.csv(here("data/costs.csv"))
 # now scale up therapy 
