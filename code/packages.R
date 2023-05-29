@@ -1,5 +1,5 @@
 ##########################################################
-# Project: MindMaze NeuroRehab Case Study 
+# Project: NeuroRehab Case Study 
 # This file: packages needed for complete code functionality
 # 05/2023
 # Spencer Arbuckle

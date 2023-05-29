@@ -1,5 +1,5 @@
 ##########################################################
-# Project: MindMaze NeuroRehab Case Study 
+# Project: NeuroRehab Case Study 
 # This file: analysis cases to for report
 # 05/2023
 # Spencer Arbuckle
@@ -13,7 +13,7 @@ source("code/packages.R")
 # define some functions:
 # helper function to set analysis parameters
 set_analysis_params <- function(){
-  return(data.frame(num_sim = 100, # how many simulated groups of patients per therapy?
+  return(data.frame(num_sim = 1000, # how many simulated groups of patients per therapy?
                     rand_seed = 16, # seed for random number generator (for reproducability)
                     mcid_thres_start = 4.2, # what is the starting threshold for meaningful fugel-meyer improvement?
                     mcid_thres_end = 7.2, # what is the upper bound for one unit of meaningful FM improvement?
@@ -125,6 +125,8 @@ df_sim <- df_sim %>%
             upper_bound = quantile(prop_success, 0.975)
   )
 
+
+#### PART 1: plot ####
 plot_one = TRUE
 if (plot_one){
   # plot simulated success rates + confidence intervals (currently commented out)
@@ -140,6 +142,7 @@ if (plot_one){
     theme_classic()
   ggplotly(p1)
 }
+
 
 #### PART 2: perform % treated analysis ####
 # define the cost per patient for each therapy (assuming therapy delivered exactly as explained in paper)
@@ -187,6 +190,8 @@ for (num_patients in seq(100, df_params$max_patients, 100)){ # for groups of var
   } # for each therapy
 } # for each # of patients
 
+
+#### PART 2: plot ####
 plot_two = FALSE
 if (plot_two){
   # plot # patients vs. prop success (given a budget and one mcid threshold)
