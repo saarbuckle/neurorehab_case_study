@@ -13,7 +13,7 @@ set_analysis_params <- function(){
                     rand_seed = 16, # seed for random number generator (for reproducability)
                     mcid_thres_start = 4.2, # what is the starting threshold for meaningful fugel-meyer improvement?
                     mcid_thres_end = 7.2, # what is the upper bound for one unit of meaningful FM improvement?
-                    mcid_thres_step = 0.1, # what is the step size between the start and end mcid for FM?
+                    mcid_thres_step = 0.2, # what is the step size between the start and end mcid for FM?
                     budget = 1000000, # how much money is available for treatment of all patients?
                     max_patients = 10000) # max number of potential patients
   )
