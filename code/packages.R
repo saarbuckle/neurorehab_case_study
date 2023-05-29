@@ -6,11 +6,15 @@
 # R version 4.2.2
 ##########################################################
 
-packages <- c("here", # file path tools
+packages <- c("sf", # simple features geospatial tools
+              "here", # file path tools
               "dplyr", # data frame filtering & summarizing
               "plotly", # interactive visualizations
+              "forcats", # for data frame reordering
               "ggplot2", # plotting
-              "gridExtra" # subplots
+              "gridExtra", # subplots
+              "patchwork", # more plotting tools
+              "geosphere" # geospatial distance tools
               )
 for (p in packages){
   # install package if needed
