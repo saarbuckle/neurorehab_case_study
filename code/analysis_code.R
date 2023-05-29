@@ -13,17 +13,29 @@ source("code/packages.R")
 source("code/functions.R")
 
 #### Load needed data ####
-df_params <- set_analysis_params()
+df_params    <- set_analysis_params()
 df_therapies <- read.csv(here("data/therapies.csv")) # the potential therapies
-df_costs <- read.csv(here("data/costs.csv")) # estimated costs for each therapy
+df_costs     <- read.csv(here("data/costs.csv")) # estimated costs for each therapy
+
+#### PART 1: linear regressions ####
+# Run several simple models to see if # therapy hours, the therapist-to-patient
+# ratio, of remoteness of therapies are systematically related to clinical
+# improvements (operationalized as the change in the fugl-meyer (fm) score)
+# linear models:
+lm_therapy_hours <- lm(fm_change_mean ~ therapy_hours, df_therapies)
+lm_ratio         <- lm(fm_change_mean ~ therapist_patient_ratio, df_therapies)
+lm_remoteness    <- lm(fm_change_mean ~ proportion_treatment_remote, df_therapies)
 
 
-#### PART 1: perform % successful therapy analysis ####
-# Here, we simulate patient data for each potential therapy.
-# Each therapy is simulated a number of times. To simulated individual patient data
-# for each therapy, we draw values from a normal distribution with the same mean and 
-# standard deviation as the change in the Fugl-Meyer score before and after (usually measured at follow up)
-# completing the therapy, as reported in each paper.
+#### PART 2: probability of clinical improvement for an individual patient  ####
+# Here we estimate the probablity of clinical improvement for a patient under 
+# each of the therapies.
+# To do this, we simulate patient data for each potential therapy.
+# Each therapy is simulated a number of times (default is 100). 
+# To simulate individual patient data for each therapy, we draw values 
+# (patient change in the FM score)from a normal distribution with the same mean 
+# and standard deviation as the change in the Fugl-Meyer score before and after 
+# (usually measured at follow up) completing the therapy, as reported in each paper.
 # For each therapy, we simulate data for the same number of patients that completed the therapy. 
 # Using each simulated dataset, we compute the proportion of "successful" therapies
 # under varying thresholds of the Fugl-Meyer (fm) (i.e., how many patients would met the 
@@ -58,26 +70,11 @@ df_sim <- df_sim %>%
             upper_bound = quantile(prop_success, 0.975)
   )
 
-
-#### PART 1: plot ####
-plot_one = TRUE
-if (plot_one){
-  # plot simulated success rates + confidence intervals (currently commented out)
-  df_sim_plot <- df_sim
-  therapies <- as.factor(df_sim_plot$therapy_id)
-  p1 <-ggplot(df_sim) + 
-    #geom_ribbon(aes(x=mcid_thres, ymin=lower_bound, ymax=upper_bound, group=therapy_id), fill="grey", alpha=0.2) +
-    geom_line(aes(x=mcid_thres, y=mean_prop_success, group=therapy_id, color=therapies)) +
-    ylim(0, 1) +
-    scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1), expand = c(0,0)) +
-    scale_x_continuous(limits = c(min(df_sim$mcid_thres), max(df_sim$mcid_thres)), expand = c(0,0)) +
-    labs(title="Treatment success at given FM level", x ="Fugl-Meyer assessment for upper extremity", y = "% of study patients with successful treatment") +
-    theme_classic()
-  ggplotly(p1)
-}
+# save results:
+write.csv(df_sim, "data/results_individual_probabilities.csv", row.names=FALSE)
 
 
-#### PART 2: perform % treated analysis ####
+#### PART 3: perform % treated analysis ####
 # Here, we use the estimated therapy success rates for each therapy to estimate, 
 # with a given budget (that covers labour, travel, and equipment), how many patients 
 # can be treated.
@@ -135,19 +132,5 @@ for (num_patients in seq(100, df_params$max_patients, 100)){ # for groups of var
   } # for each therapy
 } # for each # of patients
 
-
-#### PART 2: plot ####
-plot_two = FALSE
-if (plot_two){
-  # plot # patients vs. prop success (given a budget and one mcid threshold)
-  df_treatment_plot <- subset(df_treatment, mcid_thres==5.2)
-  therapies <- as.factor(df_treatment_plot$therapy_id)
-  p2 <- ggplot(df_treatment_plot) + 
-    geom_line(aes(x=num_patients_total, y=prop_patients_success, group=therapy_id, color=therapies)) +
-    ylim(0, 1) +
-    scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1), expand = c(0,0)) +
-    scale_x_continuous(limits = c(0, max(df_treatment_plot$num_patients_total)), expand = c(0,0)) +
-    labs(title="Treatment success given budget", x ="# of patients", y = "% of patients with successful treatment") +
-    theme_classic()
-  ggplotly(p2)
-}
+# save results:
+write.csv(df_treatment, "data/results_group_probabilities.csv", row.names=FALSE)
