@@ -10,8 +10,12 @@
   * `data` - data required for project
     + `therapies.csv` - list of therapies considered in analysis
     + `costs.csv` - list of costs associated with each therapy in analysis
-    + `results_propSuccess.RDS` - data frame with the % successful therapy results
-    + `results_propTreated.R` - data frame with the % patients treated results
+    + `nd_counties.csv` - list of counties and population (2020 counts) for North Dakota (for estimating travel costs)
+    + `nd_stroke_hospitals.csv` - geolocations for 6 stroke hospitals in North Dakota (for estimating travel costs)
+    + `therapies_colours.csv` - plotting colours associated with each therapy
+    + `results_group_probabilities.csv` - simulation results: probabilities that an individual in each therapy will improve by some clinically meaningful amount 
+    + `results_individual_probabilities.csv` - simulation results: probabilities that a group of patients will improve by some clinically meaningful amount given therapy costs
+  * `figures` - figures included in the report
 
 ### Files
   * `.Renviron` - R environment
