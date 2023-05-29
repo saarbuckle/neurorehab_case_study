@@ -18,8 +18,6 @@
   * `figures` - figures included in the report
 
 ### Files
-  * `.Renviron` - R environment
-  * `.Rprofile` - R profile settings
   * `.gitignore` - tells git what files and folders *not* to track or upload to GitHub
   * `README.md` - this page
   * `r-project.Proj` - R project
