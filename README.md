@@ -4,6 +4,7 @@
 ### Directories
   * `code` - R scripts required for project
     + `analysis_code.R` - main R analysis script
+    + `geospatial_cost_code.R` - supplementary R script to estimate average roundtrip travel costs (in North Dakota)
     + `figure_code.R` - R script for making report figures
     + `functions.R` - functions sourced and used in main script(s)
     + `packages.R` - list of packages sourced and used in main script(s)
