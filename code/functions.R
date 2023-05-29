@@ -9,7 +9,7 @@
 # define some functions:
 # helper function to set analysis parameters
 set_analysis_params <- function(){
-  return(data.frame(num_sim = 1000, # how many simulated groups of patients per therapy?
+  return(data.frame(num_sim = 100, # how many simulated groups of patients per therapy?
                     rand_seed = 16, # seed for random number generator (for reproducability)
                     mcid_thres_start = 4.2, # what is the starting threshold for meaningful fugel-meyer improvement?
                     mcid_thres_end = 7.2, # what is the upper bound for one unit of meaningful FM improvement?
