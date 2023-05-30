@@ -114,7 +114,17 @@ fig1 <- function(){
   # plot the subplots together
   gp <- grid.arrange(p1, p2, p3, p4, nrow = 2)
   # save figure
-  ggsave(filename = "figures/fig1.png", gp , width = 15, height = 10, dpi = 300, units = "cm", device='png')
+  ggsave(filename = "figures/fig1.png", gp , width = 15, height = 10, dpi = 600, units = "cm", device='png')
+#  fig <- subplot(ggplotly(p1), 
+#                 ggplotly(p2), 
+#                 ggplotly(p3),
+#                 ggplotly(p4),
+#                 nrows = 2)
+#  fig$x$data[[1]]$showlegend <- FALSE
+#  fig$x$data[[2]]$showlegend <- FALSE
+#  fig$x$data[[3]]$showlegend <- FALSE
+#  fig$x$data[[4]]$showlegend <- FALSE
+#  fig
 }
 fig2 <- function(){
   # make therapy component dot plots (FIGURE 2)
@@ -158,7 +168,7 @@ fig2 <- function(){
   # plot the subplots together
   gp <- p1 + p2 + p3 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
   # save figure
-  ggsave(filename = "figures/fig2.png", gp , width = 12, height = 7, dpi = 300, units = "cm", device='png')
+  ggsave(filename = "figures/fig2.png", gp , width = 12, height = 7, dpi = 600, units = "cm", device='png')
 }
 fig3 <- function(){
   # make probability treatment success plots (FIGURE 1)
@@ -221,5 +231,5 @@ fig3 <- function(){
   # plot subplots
   gp <- p1 + p2 + p3 + plot_layout(guides = "collect") & theme(legend.position = "right")
   # save figure
-  ggsave(filename = "figures/fig3.png", gp , width = 20, height = 7, dpi = 300, units = "cm", device='png')
+  ggsave(filename = "figures/fig3.png", gp , width = 20, height = 7, dpi = 600, units = "cm", device='png')
 }
