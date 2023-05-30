@@ -22,7 +22,7 @@
   * `.gitignore` - tells git what files and folders *not* to track or upload to GitHub
   * `README.md` - this page
   * `r-project.Proj` - R project
-  * `report.pdf` - analytical case study report
+  * `arbuckle_report.pdf` - analytical case study report
   
 ## How to use
 
