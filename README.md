@@ -22,7 +22,10 @@
   * `.gitignore` - tells git what files and folders *not* to track or upload to GitHub
   * `README.md` - this page
   * `r-project.Proj` - R project
+  * `report.pdf` - analytical case study report
   
 ## How to use
 
 To use this code to re-run the analysis in the analytical case study report, download the repository. The code is saved as an R project, and therefore, opening the R project should provide the complete workspace to re-run analyses and re-create figures.
+  * `analysis_code.R` - will re-do the primarly analyses
+  * `figure_code.R` - will make the figures
