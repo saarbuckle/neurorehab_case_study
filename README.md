@@ -3,7 +3,7 @@
 
 This case study examines the potential for high-dose, high-intensity rehabilitation therapies to address the growing burden of stroke. We examined 7 different rehabilitation therapies based on their prescribed therapy hours, therapist-to-patient ratio, proportion of therapy done remotely, and clinical outcomes measured by the Fugl-Meyer Upper Extremity (FM-UE) assessment. The FM-UE scores were used as the primary outcome measure. The analysis also considered monetary cost estimates for each therapy, including labor costs, equipment costs, and travel costs.
 
-The probability of therapy success for individual patients was evaluated by simulating hypothetical patients for each therapy based on the reported FM-UE scores and assessing the proportion of patients achieving a clinically significant improvement. For each therapy, 100 batches of patients were simulated. Results were averaged across simulation batches per each therapy.
+The probability of therapy success for individual patients was evaluated by simulating hypothetical patients for each therapy based on the reported FM-UE scores and assessing the proportion of patients achieving a clinically significant improvement. For each therapy, 100 batches of patients were simulated. Results were averaged across simulation batches per each therapy. Results and interpretations can be found in the accompanying report: `arbuckle_report.pdf`
 
 
 ### Directories
