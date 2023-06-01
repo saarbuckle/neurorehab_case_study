@@ -74,7 +74,7 @@ check_simulation_accuracy <- function(df_therapies, df_params, plot_it){
       theme_classic() +
       ylim(-6,6) +
       labs(title="Check: FM sd change", 
-           subtitle="Difference of the standard deviation of the FM change in each study vs. simulated data",
+           subtitle="Difference of the standard deviation of the FM change in each\nstudy vs. simulated data",
            x="therapy id",
            y="difference from paper standard deviation") 
     # arrange into one figure space
