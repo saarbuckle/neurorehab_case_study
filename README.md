@@ -1,7 +1,17 @@
 # *NeuroRehabilitation Case Study*
 *Analytical case study examining how to scale up high-dose, high-intensity neurorehabilitation*
 
-This case study examines the potential for high-dose, high-intensity rehabilitation therapies to address the growing burden of stroke. In this exercise, I examined 7 different rehabilitation therapies based on their prescribed therapy hours, therapist-to-patient ratio, proportion of therapy done remotely, and clinical outcomes measured by the Fugl-Meyer Upper Extremity (FM-UE) assessment. 
+This case study examines the potential for high-dose, high-intensity rehabilitation therapies to address the growing burden of stroke. In this exercise, I examined 7 different rehabilitation therapies based on their prescribed therapy hours, therapist-to-patient ratio, location of therapy (in-clinic or remote), and clinical outcomes measured by the Fugl-Meyer Upper Extremity (FM-UE) assessment. 
+
+therapy_id | paper | location | patients | $\Delta$ FM-UE (sd) | hours | sessions
+--- | --- | --- | --- | --- | --- | ---
+Dodakian_2017 | [2017](https://doi.org/10.1177/1545968317733818) | remote | 12 | 4.80 (3.80) | 56 | 28 
+Cramer_TR_2019 | [2019](https://doi.org/10.1001/jamaneurol.2019.1604) | remote | 62 | 7.86 (6.68) | 42 | 36 
+Cramer_TR_2021 | [2021](https://doi.org/10.3389/fneur.2020.611453) | remote | 12 | 6.75 (2.89) | 72 | 72 
+Cramer_IC_2019 | [2019](https://doi.org/10.1001/jamaneurol.2019.1604) | hybrid | 60 | 8.36 (7.04) | 42 | 36 
+McCabe_2015 | [2015](https://doi.org/10.1016/j.apmr.2014.10.022) | in-clinic | 12 | 7.78 (1.89) | 300 | 60
+Daly_2019 | [2019](https://doi.org/10.1177/1545968319846120) | in-clinic | 31 | 9.40 (7.12) | 300 | 60
+Ward_2019 | [2019](http://dx.doi.org/10.1136/jnnp-2018-319954) | in-clinic | 224 | 9.00 (1.33) | 90 | 15
 
 ### Analysis (in brief)
 
