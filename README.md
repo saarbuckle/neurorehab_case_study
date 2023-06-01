@@ -1,10 +1,17 @@
 # *NeuroRehabilitation Case Study*
 *Analytical case study examining how to scale up high-dose, high-intensity neurorehabilitation*
 
-This case study examines the potential for high-dose, high-intensity rehabilitation therapies to address the growing burden of stroke. We examined 7 different rehabilitation therapies based on their prescribed therapy hours, therapist-to-patient ratio, proportion of therapy done remotely, and clinical outcomes measured by the Fugl-Meyer Upper Extremity (FM-UE) assessment. The FM-UE scores were used as the primary outcome measure. The analysis also considered monetary cost estimates for each therapy, including labor costs, equipment costs, and travel costs.
+This case study examines the potential for high-dose, high-intensity rehabilitation therapies to address the growing burden of stroke. In this exercise, I examined 7 different rehabilitation therapies based on their prescribed therapy hours, therapist-to-patient ratio, proportion of therapy done remotely, and clinical outcomes measured by the Fugl-Meyer Upper Extremity (FM-UE) assessment. 
 
-The probability of therapy success for individual patients was evaluated by simulating hypothetical patients for each therapy based on the reported FM-UE scores and assessing the proportion of patients achieving a clinically significant improvement. For each therapy, 100 batches of patients were simulated. Results were averaged across simulation batches per each therapy. Results and interpretations can be found in the accompanying report: `arbuckle_report.pdf`
+### Analysis (in brief)
 
+The FM-UE scores were used as the primary outcome measure. As a first step, I estimated the probability of therapy success for individual patients by: 1) simulating hypothetical patients for each therapy based on the reported FM-UE scores; and 2) assessing the proportion of patients achieving a clinically significant improvement. This was done 100 times for each therapy, and the results were averaged across simulation batches per each therapy.
+
+Given the probabilities of achieving a range of score changes on the FM-UE per therapy, one can then estimate the proportion of individuals in a group of potential patients that would likely achieve successful outcomes. To consider how neurorehabilitation in this context can thus be scaled-up in a cost-effective manner, I also in how much each treatment costs and estimated the proportion of patients that would achieve successful outcomes (for groups of varying sizes) given a fixed budget. This required monetary cost estimates for each therapy, for which I considered labor, equipment, and travel expenses. 
+
+Results and interpretations can be found in the report: `arbuckle_report.pdf`
+
+***
 
 ### Directories
   * `code` - R scripts required for project
@@ -29,7 +36,9 @@ The probability of therapy success for individual patients was evaluated by simu
   * `r-project.Proj` - R project
   * `arbuckle_report.pdf` - analytical case study report
   
-## How to use
+***  
+  
+### How to use
 
 To use this code to re-run the analysis in the analytical case study report, download the repository. The code is saved as an R project, and therefore, opening the R project should provide the complete workspace to re-run analyses and re-create figures.
   * `analysis_code.R` - will re-do the primarly analyses
