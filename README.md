@@ -15,9 +15,9 @@ Ward_2019 | [2019](http://dx.doi.org/10.1136/jnnp-2018-319954) | in-clinic | 224
 
 ### Analysis (in brief)
 
-The FM-UE scores were used as the primary outcome measure. As a first step, I estimated the probability of therapy success for individual patients by: 1) simulating hypothetical patients for each therapy based on the reported FM-UE scores; and 2) assessing the proportion of patients achieving a clinically significant improvement. This was done 100 times for each therapy, and the results were averaged across simulation batches per each therapy.
+The FM-UE scores were used as the primary outcome measure. As a first step, I estimated the proportion of therapy success for individual patients by: 1) simulating hypothetical patients for each therapy based on the reported FM-UE scores; and 2) assessing the proportion of patients achieving a clinically significant improvement. This was done 100 times for each therapy, and the results were averaged across simulation batches per each therapy.
 
-Given the probabilities of achieving a range of score changes on the FM-UE per therapy, one can then estimate the proportion of individuals in a group of potential patients that would likely achieve successful outcomes. To consider how neurorehabilitation in this context can thus be scaled-up in a cost-effective manner, I also in how much each treatment costs and estimated the proportion of patients that would achieve successful outcomes (for groups of varying sizes) given a fixed budget. This required monetary cost estimates for each therapy, for which I considered labor, equipment, and travel expenses. 
+Assuming the estimated proportions (which are empirical) are good estimates of the probabilities of achieving a range of score changes on the FM-UE per therapy, one can then estimate the proportion of individuals in a larger group of potential patients that would achieve successful outcomes. Therefore, to consider how each neurorehabilitation can be scaled-up in a cost-effective manner, I estimated the proportion of patients that would achieve successful outcomes (a given change in FM-UE for groups of varying sizes) given a fixed budget. This required monetary cost estimates for each therapy, for which I considered labor, equipment, and travel expenses. 
 
 Results and interpretations can be found in the report: `arbuckle_report.pdf`
 
