@@ -19,7 +19,7 @@ The FM-UE scores were used as the primary outcome measure. As a first step, I es
 
 Assuming the estimated proportions (which are empirical) are good estimates of the probabilities of achieving a range of score changes on the FM-UE per therapy, one can then estimate the proportion of individuals in a larger group of potential patients that would achieve successful outcomes. However, given each treatment has some monetary cost associated with it and assuming budgetary constraints, not all individuals in increasingly larger patient groups can be treated. Therefore, to consider how each neurorehabilitation can be scaled-up in a cost-effective manner, I estimated the proportion of patients that would achieve successful outcomes (a given change in FM-UE for groups of varying sizes) given a fixed budget. This required monetary cost estimates for each therapy, for which I considered labor, equipment, and travel expenses. 
 
-Results and interpretations can be found in the report: `arbuckle_report.pdf`
+Results and interpretations can be found in the report: `arbuckle_report_v2.pdf`
 
 ***
 
@@ -44,7 +44,8 @@ Results and interpretations can be found in the report: `arbuckle_report.pdf`
   * `.gitignore` - tells git what files and folders *not* to track or upload to GitHub
   * `README.md` - this page
   * `r-project.Proj` - R project
-  * `arbuckle_report.pdf` - analytical case study report
+  * `arbuckle_report.pdf` - original analytical case study report
+  * `arbuckle_report_v2.pdf` - updated analytical case study report
   
 ***  
   
