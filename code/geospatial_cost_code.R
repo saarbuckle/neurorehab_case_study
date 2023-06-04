@@ -49,3 +49,19 @@ roundtrip_cost <- dist_km * 0.4071 * 2 # 0.4071 is the reimbursable rate per km 
 
 # compute average round-trip cost, weighted by county populations
 avg_roundtrip_cost <- (roundtrip_cost %*% df_nd$pop_2020) / sum(df_nd$pop_2020) 
+
+# for checking, plot the one-way distances and the hospital locations on a map of ND:
+# load shapefile:
+nd <- read_sf("/Users/saarbuckle/Downloads/cb_2020_us_county_500k/cb_2020_us_county_500k.shp") %>% st_transform(4269) 
+nd <- nd[nd$STATE_NAME=="North Dakota",]
+# merge shapefile with dist info
+df_nd$dist_km <- dist_km
+nd <- merge(nd,df_nd, by.x = "NAMELSAD", by.y = "county_name", all=TRUE)
+# plot:
+gp <- ggplot() + 
+  geom_sf(data = nd, aes(fill = dist_km)) +
+  scale_colour_gradient(low = "white", high = "black") +
+  geom_point(data = df_clinic, aes(x=long, y=lat), color = 'red') +
+  labs(title="One way distance to nearest (of 6) stroke centres",
+       caption = "Note: the 6 centres are located in 4 cities")
+ggsave(filename = "figures/fig_ndOneWayDistances.png", gp , width = 15, height = 10, dpi = 600, units = "cm", device='png')
