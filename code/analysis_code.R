@@ -22,10 +22,46 @@ df_costs     <- read.csv(here("data/costs.csv")) # estimated costs for each ther
 # ratio, of remoteness of therapies are systematically related to clinical
 # improvements (operationalized as the change in the fugl-meyer (fm) score)
 # linear models:
-lm_therapy_hours <- lm(fm_change_mean ~ therapy_hours, df_therapies)
-lm_ratio         <- lm(fm_change_mean ~ therapist_patient_ratio, df_therapies)
-lm_remoteness    <- lm(fm_change_mean ~ proportion_treatment_remote, df_therapies)
+lm_baseline <- lm(fm_change_mean ~ therapy_hours + therapist_patient_ratio + proportion_treatment_remote - 1, df_therapies) # omit intercept
+rmse_baseline <- sqrt(mean(summary(lm_baseline)$residuals^2))
+r_squared_baseline <- summary(lm_baseline)$r.squared
+# for each variable in model:
+#   i) permute values of predictor, leaving rest of data as is
+#   ii) est. error of model w/ permuted predictor data
+#   iii) calc. diff. between rmse of baseline model vs. model with permuted predictor data
+set.seed(123) # for reproducability
+num_permutations <- 100
 
+df_var_importance <- data.frame(permute_num = numeric(),
+                     var = character(),
+                     rmse = numeric(),
+                     rmse_diff = numeric(),
+                     r_squared = numeric(),
+                     r_squared_diff = numeric())
+for (pred_name in c('therapy_hours','therapist_patient_ratio','proportion_treatment_remote')) {
+  for (ii in seq(1,num_permutations,1)) {
+    df_shuffle <- subset(df_therapies, select=c(fm_change_mean,therapy_hours,therapist_patient_ratio,proportion_treatment_remote))
+    df_shuffle[,pred_name] <- df_shuffle[sample(nrow(df_shuffle)), pred_name]
+    lm_permuted <- lm(fm_change_mean ~ therapy_hours + therapist_patient_ratio + proportion_treatment_remote - 1, df_shuffle)
+    rmse_permuted <- sqrt(mean(summary(lm_permuted)$residuals^2))
+    r_squared_permuted <- summary(lm_permuted)$r.squared
+    df_tmp <- data.frame(permute_num = ii,
+                         var = pred_name,
+                         rmse = rmse_permuted,
+                         rmse_diff = rmse_baseline - rmse_permuted,
+                         r_squared = r_squared_permuted,
+                         r_squared_diff = r_squared_baseline - r_squared_permuted)
+    df_var_importance <- rbind(df_var_importance, df_tmp)
+  }
+}
+
+# save results:
+write.csv(df_var_importance, "data/results_model_feature_importance.csv", row.names=FALSE)
+saveRDS(lm_baseline, file = "data/results_linear_regression.rda")
+
+#lm_therapy_hours <- lm(fm_change_mean ~ therapy_hours, df_therapies)
+#lm_ratio         <- lm(fm_change_mean ~ therapist_patient_ratio, df_therapies)
+#lm_remoteness    <- lm(fm_change_mean ~ proportion_treatment_remote, df_therapies)
 
 #### PART 2: probability of clinical improvement for an individual patient  ####
 # Here we estimate the probablity of clinical improvement for a patient under 

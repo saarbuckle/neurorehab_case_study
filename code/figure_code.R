@@ -17,7 +17,7 @@ source("code/functions.R")
 text_size <<- 7 # assign text size for figures
 df_colours <<- read.csv(here("data/therapies_colours.csv")) # perscribed plotting colours for therapies
 
-#### Plots ####
+#### Plot functions ####
 fig1 <- function(){
   # make therapy info plots (FIGURE 1)
   
@@ -132,6 +132,9 @@ fig2 <- function(){
   # get needed data:
   df_therapies <- read.csv(here("data/therapies.csv")) # the potential therapies
   df_therapies_plot <- merge(df_therapies, df_colours) # add perscribed plotting colours for therapies
+  df_var_importance <- read.csv(here("data/results_model_feature_importance.csv"))
+  lm_baseline <- readRDS(here("data/results_linear_regression.rda"))
+  rmse_baseline <- sqrt(mean(summary(lm_baseline)$residuals^2))
   
   # MAKE PLOTS
   # plot therapy_hours (x) vs. fm-ue change (y)
@@ -150,7 +153,7 @@ fig2 <- function(){
     scale_y_continuous(limits = c(0, 10), expand = c(0,0)) +
     scale_x_continuous(limits = c(0, 1), expand = c(0,0)) +
     coord_cartesian(clip = "off") + 
-    labs(title="", x ="therapist-to-patient ratio", y = "") +
+    labs(title="", x ="therapist-to-patient\nratio", y = "") +
     scale_colour_manual(breaks = c(df_therapies_plot$therapy_id),
                         values = c(df_therapies_plot$colour)) +
     theme_classic() + theme(text = element_text(size=text_size))
@@ -165,10 +168,36 @@ fig2 <- function(){
     scale_colour_manual(breaks = c(df_therapies_plot$therapy_id),
                         values = c(df_therapies_plot$colour)) +
     theme_classic() + theme(text = element_text(size=text_size))
+  # plot the model error after permuting individual model features
+  p4 <- ggplot(data=df_var_importance, aes(x=var, y=rmse)) +
+    geom_hline(yintercept = rmse_baseline, linetype='dashed') +
+    geom_point(alpha = 0.25, color='darkgray') +
+    stat_summary(fun = median,
+                 geom = "pointrange",
+                 color = '#ffbb00',
+                 size = 0.75,
+                 shape = 15,
+                 linewidth = 0.75,
+                 fun.max = function(x) median(x) + mad(x),
+                 fun.min = function(x) median(x) - mad(x)) +
+    labs(x = "permuted model feature",
+         y = "model error (a.u.)") +
+    scale_x_discrete(labels = c('prop. rehab\nremote','therapist-to-\n-patient ratio','total rehab\nhours')) +
+    annotate("text", x=3.5, y=rmse_baseline + 0.05, label='baseline model error', size=2, fontface = 'italic', hjust=0, color='black') +
+    annotate("text", x=0.6, y=rmse_baseline + 0.2, label='feature importance', size=2, fontface = 'italic', hjust=0, color='darkgray') +
+    annotate("segment", x = 0.6, xend = 0.6, y = rmse_baseline + 1.01, yend = rmse_baseline + 1.12, colour = "darkgray", linewidth=0.25, arrow=arrow(type = "closed", length = unit(0.02, "npc"))) +
+    coord_cartesian(clip = "off") +
+    theme_classic() +
+    theme(text = element_text(size=text_size, colour="black"),
+          axis.line = element_line(colour = "black", linewidth=0.25),
+          axis.ticks = element_line(colour = "black", linewidth=0.25),
+          axis.text.x = element_text(angle = 45, vjust = 1, hjust=1),
+          legend.position="none") +
+    coord_flip()
   # plot the subplots together
-  gp <- p1 + p2 + p3 + plot_layout(guides = "collect") & theme(legend.position = "bottom")
+  gp <- (p1 + p2 + p3 + plot_layout(guides = "collect") & theme(legend.position = "bottom")) + p4 + plot_layout(ncol = 4) + plot_layout(widths = c(1, 1, 1, 2))
   # save figure
-  ggsave(filename = "figures/fig2.png", gp , width = 12, height = 7, dpi = 600, units = "cm", device='png')
+  ggsave(filename = "figures/fig2.png", gp , width = 20, height = 7, dpi = 600, units = "cm", device='png')
 }
 fig3 <- function(){
   # make probability treatment success plots (FIGURE 1)
@@ -214,18 +243,22 @@ fig3 <- function(){
     ylim(0, 1) +
     scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1), expand = c(0,0)) +
     scale_x_continuous(limits = c(0, max(df_plot_2$num_patients_total)), expand = c(0,0)) +
-    labs(title="Treatment success given budget", x ="# of patients", y = "% of all patients with clinical improvement") +
+    labs(title="Treatment success given budget", x ="# of patients", y = "% of simulated patients with clinical improvement") +
     theme_classic() + theme(text = element_text(size=text_size)) +
     scale_colour_manual(breaks = c(df_plot_2$therapy_id),
                         values = c(df_plot_2$colour)) +
     scale_linetype_manual(values = c(rep("longdash", 3), "solid", "longdash", rep("solid", 2)))
   
-  p3<- ggplot(data=df_plot_3_remote) + 
+  p3 <- ggplot(data=df_plot_3_remote) + 
+    #geom_rect(mapping=aes(xmin=0, xmax=max(df_plot_3_remote$num_patients_total), ymin=0, ymax=0.4, fill='a'), color='#dfeffa') +
     geom_hline(yintercept=0, linetype="dotted") + 
     geom_line(aes(x=num_patients_total, y=mean_diff)) + 
+    #scale_fill_manual(values=c("#dfeffa","darkgray", "black")) +
     scale_y_continuous(labels = scales::percent_format(), limits = c(-0.4, 0.4), expand = c(0,0)) +
     scale_x_continuous(limits = c(0, max(df_plot_3_remote$num_patients_total)), expand = c(0,0)) +
-    labs(title="Remote vs. in-person scalability", x ="# of patients", y = "difference in % clinical improvement") +
+    labs(title="Remote vs. in-person scalability", x ="# of patients", y = "difference in average % of patients\nwith clinical improvement") +
+    annotate("text",x=9000,y=0.2,label='remote rehab yeilds\n> agg. improvement', size=2, fontface = 'italic', hjust=0.5, angle = 90, color='darkgray') +
+    annotate("text",x=9000,y=-0.2,label='in-person rehab yeilds\n> agg. improvement', size=2, fontface = 'italic', hjust=0.5, angle = 90, color='darkgray') +
     theme_classic() + theme(text = element_text(size=text_size))
   
   # plot subplots
@@ -233,3 +266,8 @@ fig3 <- function(){
   # save figure
   ggsave(filename = "figures/fig3.png", gp , width = 20, height = 7, dpi = 600, units = "cm", device='png')
 }
+
+#### Make the plots ####
+fig1()
+fig2()
+fig3()
