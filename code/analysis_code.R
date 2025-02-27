@@ -17,15 +17,15 @@ df_params    <- set_analysis_params()
 df_therapies <- read.csv(here("data/therapies.csv")) # the potential therapies
 df_costs     <- read.csv(here("data/costs.csv")) # estimated costs for each therapy
 
-#### PART 1: linear regressions ####
+#### PART 1: ols regression ####
 # Run several simple models to see if # therapy hours, the therapist-to-patient
-# ratio, of remoteness of therapies are systematically related to clinical
+# ratio, of remoteness of therapies are linearly related to clinical
 # improvements (operationalized as the change in the fugl-meyer (fm) score)
-# linear models:
+# ols:
 lm_baseline <- lm(fm_change_mean ~ therapy_hours + therapist_patient_ratio + proportion_treatment_remote - 1, df_therapies) # omit intercept
 rmse_baseline <- sqrt(mean(summary(lm_baseline)$residuals^2))
 r_squared_baseline <- summary(lm_baseline)$r.squared
-# for each variable in model:
+# estimate feature importance via permutations:
 #   i) permute values of predictor, leaving rest of data as is
 #   ii) est. error of model w/ permuted predictor data
 #   iii) calc. diff. between rmse of baseline model vs. model with permuted predictor data
@@ -38,13 +38,18 @@ df_var_importance <- data.frame(permute_num = numeric(),
                      rmse_diff = numeric(),
                      r_squared = numeric(),
                      r_squared_diff = numeric())
-for (pred_name in c('therapy_hours','therapist_patient_ratio','proportion_treatment_remote')) {
+permute_vars <- c('therapy_hours','therapist_patient_ratio','proportion_treatment_remote') # define what variables we are permuting
+df_unshuffled <- subset(df_therapies, select=eval(parse(text=paste0('c(fm_change_mean, ',toString(permute_vars),')'))))
+for (pred_name in permute_vars) {
   for (ii in seq(1,num_permutations,1)) {
-    df_shuffle <- subset(df_therapies, select=c(fm_change_mean,therapy_hours,therapist_patient_ratio,proportion_treatment_remote))
+    # shuffle the rows of data for just one of the variables of interest
+    df_shuffle <- df_unshuffled
     df_shuffle[,pred_name] <- df_shuffle[sample(nrow(df_shuffle)), pred_name]
+    # ols using shuffled data (omitting intercept)
     lm_permuted <- lm(fm_change_mean ~ therapy_hours + therapist_patient_ratio + proportion_treatment_remote - 1, df_shuffle)
     rmse_permuted <- sqrt(mean(summary(lm_permuted)$residuals^2))
     r_squared_permuted <- summary(lm_permuted)$r.squared
+    # save model fit to output data frame
     df_tmp <- data.frame(permute_num = ii,
                          var = pred_name,
                          rmse = rmse_permuted,
@@ -58,10 +63,6 @@ for (pred_name in c('therapy_hours','therapist_patient_ratio','proportion_treatm
 # save results:
 write.csv(df_var_importance, "data/results_model_feature_importance.csv", row.names=FALSE)
 saveRDS(lm_baseline, file = "data/results_linear_regression.rda")
-
-#lm_therapy_hours <- lm(fm_change_mean ~ therapy_hours, df_therapies)
-#lm_ratio         <- lm(fm_change_mean ~ therapist_patient_ratio, df_therapies)
-#lm_remoteness    <- lm(fm_change_mean ~ proportion_treatment_remote, df_therapies)
 
 #### PART 2: probability of clinical improvement for an individual patient  ####
 # Here we estimate the probablity of clinical improvement for a patient under 
