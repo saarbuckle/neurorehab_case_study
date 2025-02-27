@@ -51,7 +51,8 @@ fig1 <- function(){
     labs(x = "reported rehab hours",
          y = "",
          title = "",
-         caption = "") +
+         caption = "",
+         tag = "A") +
     theme_classic() + coord_cartesian(clip = "off") +
     theme(text = element_text(size=text_size))
   # plot therapist-patient ratio (x) per therapy
@@ -70,7 +71,8 @@ fig1 <- function(){
     labs(x = "therapist-to-patient ratio",
          y = "",
          title = "",
-         caption = "") +
+         caption = "",
+         tag = "B") +
     theme_classic() + coord_cartesian(clip = "off") +
     theme(text = element_text(size=text_size))
   # plot therapy remoteness (x) per therpay
@@ -89,7 +91,8 @@ fig1 <- function(){
     labs(x = "proportion of rehab\ndone remotely",
          y = "",
          title = "",
-         caption = "") +
+         caption = "",
+         tag = "C") +
     theme_classic() + coord_cartesian(clip = "off") +
     theme(text = element_text(size=text_size))
   # plot therapy cost (x) per therapy
@@ -108,23 +111,14 @@ fig1 <- function(){
     labs(x = "estimated cost per patient ($USD)",
          y = "",
          title = "",
-         caption = "") +
+         caption = "",
+         tag = "D") +
     theme_classic() + coord_cartesian(clip = "off") +
     theme(text = element_text(size=text_size))
   # plot the subplots together
   gp <- grid.arrange(p1, p2, p3, p4, nrow = 2)
   # save figure
   ggsave(filename = "figures/fig1.png", gp , width = 15, height = 10, dpi = 600, units = "cm", device='png')
-#  fig <- subplot(ggplotly(p1), 
-#                 ggplotly(p2), 
-#                 ggplotly(p3),
-#                 ggplotly(p4),
-#                 nrows = 2)
-#  fig$x$data[[1]]$showlegend <- FALSE
-#  fig$x$data[[2]]$showlegend <- FALSE
-#  fig$x$data[[3]]$showlegend <- FALSE
-#  fig$x$data[[4]]$showlegend <- FALSE
-#  fig
 }
 fig2 <- function(){
   # make therapy component dot plots (FIGURE 2)
@@ -142,7 +136,7 @@ fig2 <- function(){
     geom_point(aes(x=therapy_hours, fm_change_mean, color=therapy_id)) +
     ylim(0, 20) +
     scale_y_continuous(limits = c(0, 10), expand = c(0,0)) +
-    labs(title="", x ="total rehab hours", y = "mean FM-UE increase") +
+    labs(title="", x ="total rehab hours", y = "mean FM-UE increase", tag="A") +
     scale_colour_manual(breaks = c(df_therapies_plot$therapy_id),
                         values = c(df_therapies_plot$colour)) +
     theme_classic() + theme(text = element_text(size=text_size))
@@ -153,7 +147,7 @@ fig2 <- function(){
     scale_y_continuous(limits = c(0, 10), expand = c(0,0)) +
     scale_x_continuous(limits = c(0, 1), expand = c(0,0)) +
     coord_cartesian(clip = "off") + 
-    labs(title="", x ="therapist-to-patient\nratio", y = "") +
+    labs(title="", x ="therapist-to-patient\nratio", y = "", tag="B") +
     scale_colour_manual(breaks = c(df_therapies_plot$therapy_id),
                         values = c(df_therapies_plot$colour)) +
     theme_classic() + theme(text = element_text(size=text_size))
@@ -164,7 +158,7 @@ fig2 <- function(){
     scale_y_continuous(limits = c(0, 10), expand = c(0,0)) +
     scale_x_continuous(limits = c(-0.05, 1), expand = c(0,0)) +
     coord_cartesian(clip = "off") +
-    labs(title="", x ="proportion of rehab\noffered remotely", y = "") +
+    labs(title="", x ="proportion of rehab\noffered remotely", y = "", tag="C") +
     scale_colour_manual(breaks = c(df_therapies_plot$therapy_id),
                         values = c(df_therapies_plot$colour)) +
     theme_classic() + theme(text = element_text(size=text_size))
@@ -181,7 +175,8 @@ fig2 <- function(){
                  fun.max = function(x) median(x) + mad(x),
                  fun.min = function(x) median(x) - mad(x)) +
     labs(x = "permuted model feature",
-         y = "model error (a.u.)") +
+         y = "model error (a.u.)",
+         tag="D") +
     scale_x_discrete(labels = c('prop. rehab\nremote','therapist-to-\n-patient ratio','total rehab\nhours')) +
     annotate("text", x=3.5, y=rmse_baseline + 0.05, label='baseline model error', size=2, fontface = 'italic', hjust=0, color='black') +
     annotate("text", x=0.6, y=rmse_baseline + 0.2, label='feature importance', size=2, fontface = 'italic', hjust=0, color='darkgray') +
@@ -232,7 +227,7 @@ fig3 <- function(){
     ylim(0, 1) +
     scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1), expand = c(0,0)) +
     scale_x_continuous(limits = c(min(df_plot_1$mcid_thres), max(df_plot_1$mcid_thres)), expand = c(0,0)) +
-    labs(title="Treatment success", x ="FM-UE thresholds", y = "probability of rehab success") +
+    labs(title="Treatment success", x ="FM-UE thresholds", y = "probability of rehab success", tag="A") +
     theme_classic() + theme(text = element_text(size=text_size)) +
     scale_colour_manual(breaks = c(df_plot_1$therapy_id),
                         values = c(df_plot_1$colour)) +
@@ -243,7 +238,7 @@ fig3 <- function(){
     ylim(0, 1) +
     scale_y_continuous(labels = scales::percent_format(), limits = c(0, 1), expand = c(0,0)) +
     scale_x_continuous(limits = c(0, max(df_plot_2$num_patients_total)), expand = c(0,0)) +
-    labs(title="Treatment success given budget", x ="# of patients", y = "% of simulated patients with clinical improvement") +
+    labs(title="Treatment success given budget", x ="# of patients", y = "% of simulated patients with clinical improvement", tag="B") +
     theme_classic() + theme(text = element_text(size=text_size)) +
     scale_colour_manual(breaks = c(df_plot_2$therapy_id),
                         values = c(df_plot_2$colour)) +
@@ -256,7 +251,7 @@ fig3 <- function(){
     #scale_fill_manual(values=c("#dfeffa","darkgray", "black")) +
     scale_y_continuous(labels = scales::percent_format(), limits = c(-0.4, 0.4), expand = c(0,0)) +
     scale_x_continuous(limits = c(0, max(df_plot_3_remote$num_patients_total)), expand = c(0,0)) +
-    labs(title="Remote vs. in-person scalability", x ="# of patients", y = "difference in average % of patients\nwith clinical improvement") +
+    labs(title="Remote vs. in-person scalability", x ="# of patients", y = "difference in average % of patients\nwith clinical improvement", tag="C") +
     annotate("text",x=9000,y=0.2,label='remote rehab yeilds\n> agg. improvement', size=2, fontface = 'italic', hjust=0.5, angle = 90, color='darkgray') +
     annotate("text",x=9000,y=-0.2,label='in-person rehab yeilds\n> agg. improvement', size=2, fontface = 'italic', hjust=0.5, angle = 90, color='darkgray') +
     theme_classic() + theme(text = element_text(size=text_size))
